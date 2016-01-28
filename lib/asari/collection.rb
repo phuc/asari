@@ -52,10 +52,10 @@ class Asari
         hit.each { |hit|  @data[hit["id"]] = hit["data"]}
       elsif hit.first && hit.first["fields"]
         @data = {}
-        hit.each { |hit|  @data[hit["id"]] = hit["fields"]}
+        hit.each { |hit|  @data[hit["id"]] = hit["fields"].merge(highlights: hit["highlights"])}
       else
         @data = hit.map { |hit| hit["id"] }
-      end
+      end      
     end
 
     def offset
