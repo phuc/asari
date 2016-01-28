@@ -88,7 +88,8 @@ class Asari
     url += expression_options(options)
     url += rank_options(options)
     url += field_weights_options(options)
-
+    url += highlight_field_options(options)
+    
     begin
       response = HTTParty.get(url)
     rescue Exception => e
@@ -321,6 +322,11 @@ class Asari
     rank = normalize_rank(options[:rank])
     rank_or_sort = api_version == API_VERSION_2013 ? 'sort' : 'rank'
     "&#{rank_or_sort}=#{CGI.escape(rank)}"
+  end
+  
+  def highlight_field_options(options)
+    return "" unless options[:highlight]
+    "&highlight.#{options[:highlight][:name]}=#{CGI.escape(options[:highlight][:options].to_json)}"
   end
 
   def return_fields_options(options)
